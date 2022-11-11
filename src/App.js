@@ -4,6 +4,7 @@ import PersonalInfo from "./components/Left_side_components/PersonalInfo";
 import EducationInfo from "./components/Left_side_components/EducationInfo";
 // import CvLayout from "./components/Right_side_components/CvLayout";
 import RenderComponents from "./components/Left_side_components/RenderComponents";
+import uniqid from "uniqid";
 
 import Button from "react-bootstrap/Button";
 import React, { Component } from "react";
@@ -16,8 +17,8 @@ export class App extends Component {
       personalInfo: [],
       educationInfo: [],
       components: {
-        personalInfo: [],
-        educationInfo: [],
+        personalInfo: [{ component: PersonalInfo, id: uniqid() }],
+        educationInfo: [{ component: EducationInfo, id: uniqid() }],
       },
     };
   }
@@ -37,11 +38,24 @@ export class App extends Component {
     }
   };
 
+  deleteComponent = (key, id, e) => {
+    e.preventDefault();
+    let { components } = this.state;
+    let filteredArray = components[key].filter((obj) => obj.id !== id);
+    let updatedState = this.state[key].filter((obj) => obj.id !== id);
+    this.setState({
+      components: { ...components, [key]: filteredArray },
+      [key]: updatedState,
+    });
+  };
+
   addComponent = (key, component) => {
     let { components } = this.state;
-    console.log(components);
     this.setState({
-      components: { ...components, [key]: [...components[key], component] },
+      components: {
+        ...components,
+        [key]: [...components[key], { component: component, id: uniqid() }],
+      },
     });
   };
 
@@ -69,6 +83,7 @@ export class App extends Component {
           <RenderComponents
             addToAppState={this.addToState}
             values={components.educationInfo}
+            deleteComponent={this.deleteComponent}
           />
           <Button
             onClick={this.addComponent.bind(

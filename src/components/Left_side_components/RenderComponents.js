@@ -6,7 +6,16 @@ export class RenderComponents extends Component {
     return (
       <div>
         {this.props.values.map((Component, i) => {
-          return <Component key={i} addToAppState={this.props.addToAppState} />;
+          let Value = Component.component;
+          let id = Component.id;
+          return (
+            <Value
+              key={i}
+              addToAppState={this.props.addToAppState}
+              id={id}
+              deleteComponent={this.props.deleteComponent}
+            />
+          );
         })}
       </div>
     );

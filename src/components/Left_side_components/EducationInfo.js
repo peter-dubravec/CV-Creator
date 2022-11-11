@@ -7,7 +7,7 @@ export class EducationInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      educationInfo: { school: "", from: "", to: "", id: uniqid() },
+      educationInfo: { school: "", from: "", to: "", id: this.props.id },
     };
   }
 
@@ -34,7 +34,8 @@ export class EducationInfo extends Component {
   };
 
   render() {
-    const { id } = this.state.educationInfo;
+    const { id } = this.props;
+
     return (
       <Form className="form-style">
         <Form.Group className="mb-3">
@@ -68,7 +69,11 @@ export class EducationInfo extends Component {
         </Form.Group>
 
         <Button
-          // onClick={this.props.deleteComp.bind(this, id)}
+          onClick={this.props.deleteComponent.bind(
+            this,
+            "educationInfo",
+            this.props.id
+          )}
           variant="danger"
           type="submit"
         >
