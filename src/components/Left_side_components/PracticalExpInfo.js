@@ -2,32 +2,39 @@ import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export class EducationInfo extends Component {
+export class PracticalExpInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      educationInfo: { school: "", from: "", to: "", id: this.props.id },
+      practicalExpInfo: {
+        companyName: "",
+        position: "",
+        responsibilities: "",
+        from: "",
+        to: "",
+        id: this.props.id,
+      },
     };
   }
 
   changeState = (e) => {
     const { addToAppState } = this.props;
-    const { educationInfo } = this.state;
+    const { practicalExpInfo } = this.state;
 
     this.setState(
       {
-        educationInfo: {
-          ...educationInfo,
+        practicalExpInfo: {
+          ...practicalExpInfo,
           [e.target.name]: e.target.value,
         },
       },
       () =>
         addToAppState(
-          "educationInfo",
-          educationInfo,
+          "practicalExpInfo",
+          practicalExpInfo,
           e.target.name,
           e.target.value,
-          educationInfo.id
+          practicalExpInfo.id
         )
     );
   };
@@ -36,17 +43,37 @@ export class EducationInfo extends Component {
     return (
       <Form className="form-style">
         <Form.Group className="mb-3">
-          <Form.Label>School:</Form.Label>
+          <Form.Label>Company Name:</Form.Label>
           <Form.Control
-            name="school"
+            name="companyName"
             onChange={this.changeState}
             type="text"
-            placeholder="Enter School Name"
+            placeholder="Enter Company Name"
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>From:</Form.Label>
+          <Form.Label>Position:</Form.Label>
+          <Form.Control
+            name="position"
+            onChange={this.changeState}
+            type="text"
+            placeholder="Your Role"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Responsibilities:</Form.Label>
+          <Form.Control
+            name="responsibilities"
+            onChange={this.changeState}
+            type="text"
+            placeholder="Describe your responsibilities"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>From</Form.Label>
           <Form.Control
             name="from"
             onChange={this.changeState}
@@ -56,7 +83,7 @@ export class EducationInfo extends Component {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>To:</Form.Label>
+          <Form.Label>To</Form.Label>
           <Form.Control
             name="to"
             onChange={this.changeState}
@@ -68,7 +95,7 @@ export class EducationInfo extends Component {
         <Button
           onClick={this.props.deleteComponent.bind(
             this,
-            "educationInfo",
+            "practicalExpInfo",
             this.props.id
           )}
           variant="danger"
@@ -81,4 +108,4 @@ export class EducationInfo extends Component {
   }
 }
 
-export default EducationInfo;
+export default PracticalExpInfo;

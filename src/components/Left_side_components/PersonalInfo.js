@@ -18,7 +18,6 @@ export default class PersonalInfo extends Component {
   changeState = (e) => {
     const { addToAppState } = this.props;
     const { personalInfo } = this.state;
-    console.log(personalInfo);
 
     this.setState(
       {
@@ -44,9 +43,8 @@ export default class PersonalInfo extends Component {
   render() {
     return (
       <Form className="form-style">
-        <h3>Personal Information</h3>
         <Form.Group className="mb-3">
-          <Form.Label>Full Name</Form.Label>
+          <Form.Label>Full Name:</Form.Label>
           <Form.Control
             name="firstName"
             onChange={this.changeState}
@@ -56,7 +54,7 @@ export default class PersonalInfo extends Component {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Phone Number</Form.Label>
+          <Form.Label>Phone Number:</Form.Label>
           <Form.Control
             onChange={this.changeState}
             name="number"
@@ -66,7 +64,7 @@ export default class PersonalInfo extends Component {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email address:</Form.Label>
           <Form.Control
             onChange={this.changeState}
             name="email"
