@@ -32,6 +32,12 @@ export class EducationInfo extends Component {
     );
   };
 
+  componentDidMount() {
+    const { addToAppState } = this.props;
+    const { educationInfo } = this.state;
+    addToAppState("educationInfo", educationInfo, "", "", educationInfo.id);
+  }
+
   render() {
     return (
       <Form className="form-style">

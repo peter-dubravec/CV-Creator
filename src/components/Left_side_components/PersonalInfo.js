@@ -34,11 +34,11 @@ export default class PersonalInfo extends Component {
     );
   };
 
-  // formSubmit = (e) => {
-  //   e.preventDefault();
-  // };
-
-  // onSubmit={this.formSubmit}
+  componentDidMount() {
+    const { personalInfo } = this.state;
+    const { addToAppState } = this.props;
+    addToAppState("personalInfo", personalInfo, "", "", personalInfo.id);
+  }
 
   render() {
     return (

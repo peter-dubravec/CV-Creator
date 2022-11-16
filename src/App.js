@@ -74,7 +74,7 @@ export class App extends Component {
             <div className="component">
               <h3>Personal Information</h3>
               <RenderComponents
-                values={components.personalInfo}
+                componenentsArr={components.personalInfo}
                 addToAppState={this.addToState}
               />
             </div>
@@ -82,7 +82,7 @@ export class App extends Component {
               <h3>Education</h3>
               <RenderComponents
                 addToAppState={this.addToState}
-                values={components.educationInfo}
+                componenentsArr={components.educationInfo}
                 deleteComponent={this.deleteComponent}
               />
               <Button
@@ -102,7 +102,7 @@ export class App extends Component {
               <h3>Practical Experience</h3>
               <RenderComponents
                 addToAppState={this.addToState}
-                values={components.practicalExpInfo}
+                componenentsArr={components.practicalExpInfo}
                 deleteComponent={this.deleteComponent}
               />
               <Button

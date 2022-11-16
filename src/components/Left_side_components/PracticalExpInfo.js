@@ -39,6 +39,18 @@ export class PracticalExpInfo extends Component {
     );
   };
 
+  componentDidMount() {
+    const { addToAppState } = this.props;
+    const { practicalExpInfo } = this.state;
+    addToAppState(
+      "practicalExpInfo",
+      practicalExpInfo,
+      "",
+      "",
+      practicalExpInfo.id
+    );
+  }
+
   render() {
     return (
       <Form className="form-style">
