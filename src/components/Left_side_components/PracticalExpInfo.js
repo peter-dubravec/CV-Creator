@@ -1,123 +1,90 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export class PracticalExpInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      practicalExpInfo: {
-        companyName: "",
-        position: "",
-        responsibilities: "",
-        from: "",
-        to: "",
-        id: this.props.id,
-      },
-    };
-  }
+const PracticalExpInfo = (props) => {
+  const [practicalExpInfo, setPracticalExpInfo] = useState({
+    companyName: "",
+    position: "",
+    responsibilities: "",
+    from: "",
+    to: "",
+    id: props.id,
+  });
 
-  changeState = (e) => {
-    const { addToAppState } = this.props;
-    const { practicalExpInfo } = this.state;
+  useEffect(() => {
+    props.addToAppState(practicalExpInfo);
+  }, [practicalExpInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    this.setState(
-      {
-        practicalExpInfo: {
-          ...practicalExpInfo,
-          [e.target.name]: e.target.value,
-        },
-      },
-      () =>
-        addToAppState(
-          "practicalExpInfo",
-          practicalExpInfo,
-          e.target.name,
-          e.target.value,
-          practicalExpInfo.id
-        )
-    );
+  const changeState = (e) => {
+    let copy = { ...practicalExpInfo };
+    copy[e.target.name] = e.target.value;
+    setPracticalExpInfo(copy);
   };
 
-  componentDidMount() {
-    const { addToAppState } = this.props;
-    const { practicalExpInfo } = this.state;
-    addToAppState(
-      "practicalExpInfo",
-      practicalExpInfo,
-      "",
-      "",
-      practicalExpInfo.id
-    );
-  }
+  const handleClick = (e) => {
+    e.preventDefault();
+    props.deleteComponent(props.id);
+  };
 
-  render() {
-    return (
-      <Form className="form-style">
-        <Form.Group className="mb-3">
-          <Form.Label>Company Name:</Form.Label>
-          <Form.Control
-            name="companyName"
-            onChange={this.changeState}
-            type="text"
-            placeholder="Enter Company Name"
-          />
-        </Form.Group>
+  return (
+    <Form className="form-style">
+      <Form.Group className="mb-3">
+        <Form.Label>Company Name:</Form.Label>
+        <Form.Control
+          name="companyName"
+          onChange={changeState}
+          type="text"
+          placeholder="Enter Company Name"
+        />
+      </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Position:</Form.Label>
-          <Form.Control
-            name="position"
-            onChange={this.changeState}
-            type="text"
-            placeholder="Your Role"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Position:</Form.Label>
+        <Form.Control
+          name="position"
+          onChange={changeState}
+          type="text"
+          placeholder="Your Role"
+        />
+      </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Responsibilities:</Form.Label>
-          <Form.Control
-            name="responsibilities"
-            onChange={this.changeState}
-            type="text"
-            placeholder="Describe your responsibilities"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Responsibilities:</Form.Label>
+        <Form.Control
+          name="responsibilities"
+          onChange={changeState}
+          type="text"
+          placeholder="Describe your responsibilities"
+        />
+      </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>From</Form.Label>
-          <Form.Control
-            name="from"
-            onChange={this.changeState}
-            type="number"
-            placeholder="Enter Starting Year"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>From</Form.Label>
+        <Form.Control
+          name="from"
+          onChange={changeState}
+          type="number"
+          placeholder="Enter Starting Year"
+        />
+      </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>To</Form.Label>
-          <Form.Control
-            name="to"
-            onChange={this.changeState}
-            type="number"
-            placeholder="Enter Year of Finish"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>To</Form.Label>
+        <Form.Control
+          name="to"
+          onChange={changeState}
+          type="number"
+          placeholder="Enter Year of Finish"
+        />
+      </Form.Group>
 
-        <Button
-          onClick={this.props.deleteComponent.bind(
-            this,
-            "practicalExpInfo",
-            this.props.id
-          )}
-          variant="danger"
-          type="submit"
-        >
-          Delete
-        </Button>
-      </Form>
-    );
-  }
-}
+      <Button onClick={handleClick} variant="danger" type="submit">
+        Delete
+      </Button>
+    </Form>
+  );
+};
 
 export default PracticalExpInfo;
+

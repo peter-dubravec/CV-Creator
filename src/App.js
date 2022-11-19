@@ -9,129 +9,163 @@ import Footer from "./components/Center_components/Footer";
 import uniqid from "uniqid";
 import CvLayout from "./components/Right_side_components/CvLayout";
 import Button from "react-bootstrap/Button";
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-export class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [personalInfo, setPersonalInfo] = useState([]);
+  const [educationInfo, setEducationInfo] = useState([]);
+  const [practicalExpInfo, setPracticalExpInfo] = useState([]);
 
-    this.state = {
-      personalInfo: [],
-      educationInfo: [],
-      practicalExpInfo: [],
-      components: {
-        personalInfo: [{ component: PersonalInfo, id: uniqid() }],
-        educationInfo: [{ component: EducationInfo, id: uniqid() }],
-        practicalExpInfo: [{ component: PracticalExpInfo, id: uniqid() }],
-      },
-    };
-  }
+  const [personalInfoComponent] = useState([
+    { component: PersonalInfo, id: uniqid() },
+  ]);
 
-  addToState = (whichArray, obj, key, value, id) => {
-    let deepCopy = JSON.parse(JSON.stringify(this.state[whichArray]));
-    let findObj = deepCopy.find((val) => val.id === id);
+  const [educationInfoComponent, setEducationInfoComponent] = useState([
+    { component: EducationInfo, id: uniqid() },
+  ]);
+
+  const [practicalExpInfoComponent, setPracticalExpInfoComponent] = useState([
+    { component: PracticalExpInfo, id: uniqid() },
+  ]);
+
+  const setPersonalInfoComp = (comp) => {
+    let deepCopy = JSON.parse(JSON.stringify(personalInfo));
+    let findObj = deepCopy.find((obj) => obj.id === comp.id);
     if (findObj) {
-      findObj[key] = value;
-      this.setState({
-        [whichArray]: deepCopy,
-      });
+      setPersonalInfo([comp]);
     } else {
-      this.setState({
-        [whichArray]: [...this.state[whichArray], obj],
-      });
+      setPersonalInfo([...personalInfo, comp]);
     }
   };
 
-  deleteComponent = (key, id, e) => {
-    e.preventDefault();
-    let { components } = this.state;
-    let filteredArray = components[key].filter((obj) => obj.id !== id);
-    let updatedState = this.state[key].filter((obj) => obj.id !== id);
-    this.setState({
-      components: { ...components, [key]: filteredArray },
-      [key]: updatedState,
-    });
+  const setEducationInfoComp = (comp) => {
+    let deepCopy = JSON.parse(JSON.stringify(educationInfo));
+    let findObj = deepCopy.find((obj) => obj.id === comp.id);
+    if (findObj) {
+      setEducationInfo(
+        educationInfo.map((item) => (item.id === comp.id ? comp : item))
+      );
+    } else {
+      setEducationInfo([...educationInfo, comp]);
+    }
   };
 
-  addComponent = (key, component) => {
-    let { components } = this.state;
-    this.setState({
-      components: {
-        ...components,
-        [key]: [...components[key], { component: component, id: uniqid() }],
+  const setPracticalExpInfoComp = (comp) => {
+    let deepCopy = JSON.parse(JSON.stringify(practicalExpInfo));
+    let findObj = deepCopy.find((obj) => obj.id === comp.id);
+    if (findObj) {
+      setPracticalExpInfo(
+        practicalExpInfo.map((item) => (item.id === comp.id ? comp : item))
+      );
+    } else {
+      setPracticalExpInfo([...practicalExpInfo, comp]);
+    }
+  };
+
+  const deletePracticalExpComponent = (id) => {
+    let filteredPracticalExpComponentArray = practicalExpInfoComponent.filter(
+      (component) => component.id !== id
+    );
+
+    setPracticalExpInfoComponent(filteredPracticalExpComponentArray);
+
+    let filteredPracticalExpArray = practicalExpInfo.filter(
+      (obj) => obj.id !== id
+    );
+
+    setPracticalExpInfo(filteredPracticalExpArray);
+  };
+
+  const deleteEducationInfoComponent = (id) => {
+    let filteredEducationInfoComponentArray = educationInfoComponent.filter(
+      (component) => component.id !== id
+    );
+    setEducationInfoComponent(filteredEducationInfoComponentArray);
+
+    let filteredEducationInfoArray = educationInfo.filter(
+      (obj) => obj.id !== id
+    );
+
+    setEducationInfo(filteredEducationInfoArray);
+  };
+
+  const addEducationInfoComponent = () => {
+    setEducationInfoComponent([
+      ...educationInfoComponent,
+      {
+        component: EducationInfo,
+        id: uniqid(),
       },
-    });
+    ]);
   };
 
-  render() {
-    const { components, personalInfo, educationInfo, practicalExpInfo } =
-      this.state;
-    return (
-      <div className="App">
-        <Header />
-        <main>
-          <div className="right">
-            <div className="component">
-              <h3>Personal Information</h3>
-              <RenderComponents
-                componenentsArr={components.personalInfo}
-                addToAppState={this.addToState}
-              />
-            </div>
-            <div className="component">
-              <h3>Education</h3>
-              <RenderComponents
-                addToAppState={this.addToState}
-                componenentsArr={components.educationInfo}
-                deleteComponent={this.deleteComponent}
-              />
-              <Button
-                onClick={this.addComponent.bind(
-                  this,
-                  "educationInfo",
-                  EducationInfo
-                )}
-                className="education-info--btn"
-                variant="primary"
-                type="submit"
-              >
-                Add +
-              </Button>
-            </div>
-            <div className="component">
-              <h3>Practical Experience</h3>
-              <RenderComponents
-                addToAppState={this.addToState}
-                componenentsArr={components.practicalExpInfo}
-                deleteComponent={this.deleteComponent}
-              />
-              <Button
-                onClick={this.addComponent.bind(
-                  this,
-                  "practicalExpInfo",
-                  PracticalExpInfo
-                )}
-                variant="primary"
-                type="submit"
-              >
-                Add +
-              </Button>
-            </div>
-          </div>
-          <div className="left">
-            <CvLayout
-              personalInfo={personalInfo}
-              educationInfo={educationInfo}
-              practicalExpInfo={practicalExpInfo}
+  const addPracticalExpComponent = () => {
+    setPracticalExpInfoComponent([
+      ...practicalExpInfoComponent,
+      {
+        component: PracticalExpInfo,
+        id: uniqid(),
+      },
+    ]);
+  };
+
+  return (
+    <div className="App">
+      <Header />
+      <main>
+        <div className="right">
+          <div className="component">
+            <h3>Personal Information</h3>
+            <RenderComponents
+              addToAppState={setPersonalInfoComp}
+              componenentsArr={personalInfoComponent}
             />
           </div>
-        </main>
-        <div className="footer">
-          <Footer />
+          <div className="component">
+            <h3>Education</h3>
+            <RenderComponents
+              addToAppState={setEducationInfoComp}
+              componenentsArr={educationInfoComponent}
+              deleteComponent={deleteEducationInfoComponent}
+            />
+            <Button
+              onClick={addEducationInfoComponent}
+              className="education-info--btn"
+              variant="primary"
+              type="submit"
+            >
+              Add +
+            </Button>
+          </div>
+          <div className="component">
+            <h3>Practical Experience</h3>
+            <RenderComponents
+              addToAppState={setPracticalExpInfoComp}
+              componenentsArr={practicalExpInfoComponent}
+              deleteComponent={deletePracticalExpComponent}
+            />
+            <Button
+              onClick={addPracticalExpComponent}
+              variant="primary"
+              type="submit"
+            >
+              Add +
+            </Button>
+          </div>
         </div>
+        <div className="left">
+          <CvLayout
+            personalInfo={personalInfo}
+            educationInfo={educationInfo}
+            practicalExpInfo={practicalExpInfo}
+          />
+        </div>
+      </main>
+      <div className="footer">
+        <Footer />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;

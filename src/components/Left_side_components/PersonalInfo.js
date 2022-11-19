@@ -1,81 +1,60 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
-import uniqid from "uniqid";
 
-export default class PersonalInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      personalInfo: {
-        firstName: "",
-        number: "",
-        email: "",
-        id: uniqid(),
-      },
-    };
-  }
+const PersonalInfo = (props) => {
+  const [personalInfo, setPersonalInfo] = useState({
+    firstName: "",
+    number: "",
+    email: "",
+    id: props.id,
+  });
 
-  changeState = (e) => {
-    const { addToAppState } = this.props;
-    const { personalInfo } = this.state;
+  useEffect(() => {
+    props.addToAppState(personalInfo);
+  }, [personalInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    this.setState(
-      {
-        personalInfo: { ...personalInfo, [e.target.name]: e.target.value },
-      },
-      () =>
-        addToAppState(
-          "personalInfo",
-          personalInfo,
-          e.target.name,
-          e.target.value,
-          personalInfo.id
-        )
-    );
+  const changeState = (e) => {
+    let copy = { ...personalInfo };
+    copy[e.target.name] = e.target.value;
+    setPersonalInfo(copy);
   };
 
-  componentDidMount() {
-    const { personalInfo } = this.state;
-    const { addToAppState } = this.props;
-    addToAppState("personalInfo", personalInfo, "", "", personalInfo.id);
-  }
+  return (
+    <Form className="form-style">
+      <Form.Group className="mb-3">
+        <Form.Label>Full Name:</Form.Label>
+        <Form.Control
+          name="firstName"
+          onChange={changeState}
+          type="text"
+          placeholder="Enter Name"
+        />
+      </Form.Group>
 
-  render() {
-    return (
-      <Form className="form-style">
-        <Form.Group className="mb-3">
-          <Form.Label>Full Name:</Form.Label>
-          <Form.Control
-            name="firstName"
-            onChange={this.changeState}
-            type="text"
-            placeholder="Enter Name"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Phone Number:</Form.Label>
+        <Form.Control
+          onChange={changeState}
+          name="number"
+          type="tel"
+          placeholder="Number"
+        />
+      </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Phone Number:</Form.Label>
-          <Form.Control
-            onChange={this.changeState}
-            name="number"
-            type="tel"
-            placeholder="Number"
-          />
-        </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Email address:</Form.Label>
+        <Form.Control
+          onChange={changeState}
+          name="email"
+          type="email"
+          placeholder="Enter email"
+        />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
+    </Form>
+  );
+};
 
-        <Form.Group className="mb-3">
-          <Form.Label>Email address:</Form.Label>
-          <Form.Control
-            onChange={this.changeState}
-            name="email"
-            type="email"
-            placeholder="Enter email"
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-      </Form>
-    );
-  }
-}
+export default PersonalInfo;
